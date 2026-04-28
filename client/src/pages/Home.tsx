@@ -1,38 +1,37 @@
 import { useEffect, useState } from 'react';
 import {
   getWorkouts,
-  createWorkout,
+  addWorkout,
   deleteWorkout,
-} from '../api/client';
+} from '../utils/workouts';
 
 export default function Home() {
   const [workouts, setWorkouts] = useState<any[]>([]);
   const [name, setName] = useState('');
 
-  const load = async () => {
-    try {
-      const data = await getWorkouts();
-      setWorkouts(data);
-    } catch (err) {
-      console.error(err);
-    }
+  // Cargar datos desde localStorage
+  const load = () => {
+    const data = getWorkouts();
+    setWorkouts(data);
   };
 
   useEffect(() => {
     load();
   }, []);
 
-  const handleCreate = async () => {
+  // Crear entrenamiento
+  const handleCreate = () => {
     if (!name.trim()) return;
 
-    await createWorkout({ name, type: 'fuerza' });
+    const updated = addWorkout({ name, type: 'fuerza' });
+    setWorkouts(updated);
     setName('');
-    load();
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteWorkout(id);
-    load();
+  // Eliminar entrenamiento
+  const handleDelete = (id: number) => {
+    const updated = deleteWorkout(id);
+    setWorkouts(updated);
   };
 
   return (
