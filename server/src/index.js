@@ -1,36 +1,42 @@
-require('dotenv').config({ path: __dirname + '/../.env' });
-
-const express = require('express');
-const cors = require('cors');
-
-const { PORT } = require('./config/env');
-const workoutRoutes = require('./routes/workout.routes');
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
-// middlewares
 app.use(cors());
 app.use(express.json());
 
-// rutas
-app.use('/api/v1/workouts', workoutRoutes);
+// 🔥 Base de datos en memoria (simple para el proyecto)
+let workouts = [];
 
-// health check
-app.get('/', (req, res) => {
-  res.send('API funcionando 🚀');
+// GET → obtener todos
+app.get("/api/v1/workouts", (req, res) => {
+  res.json(workouts);
 });
 
-// manejo de errores
-app.use((err, req, res, next) => {
-  if (err.message === 'NOT_FOUND') {
-    return res.status(404).json({ error: 'No encontrado' });
-  }
+// POST → crear
+app.post("/api/v1/workouts", (req, res) => {
+  const newWorkout = {
+    id: Date.now().toString(),
+    ...req.body,
+  };
 
-  console.error(err);
-  res.status(500).json({ error: 'Error interno del servidor' });
+  workouts.push(newWorkout);
+  res.status(201).json(newWorkout);
 });
 
-// levantar servidor
+// DELETE → eliminar
+app.delete("/api/v1/workouts/:id", (req, res) => {
+  const { id } = req.params;
+
+  workouts = workouts.filter((w) => w.id !== id);
+
+  res.status(200).json({ message: "Deleted" });
+});
+
+// 🔴 IMPORTANTE PARA RENDER
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
