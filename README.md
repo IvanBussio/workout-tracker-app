@@ -38,27 +38,27 @@ En el backend se aplica arquitectura por capas:
 
 ## API
 
-Base URL:
-http://localhost:3000/api/v1/workouts
+# Workout Tracker App
 
-Endpoints:
+## 🚀 Despliegue
+https://workout-tracker-app-z21p.vercel.app/
 
-- GET /api/v1/workouts → obtener entrenamientos
-- POST /api/v1/workouts → crear entrenamiento
-- DELETE /api/v1/workouts/:id → eliminar entrenamiento
+## 📋 Trello
+https://trello.com/b/s94mUlLY/workout-tracker-app
 
----
+## 📂 Repositorio
+https://github.com/IvanBussio/workout-tracker-app
 
-## Instalación y ejecución
+## 🛠️ Tecnologías
+- React
+- TypeScript
+- Vite
+- LocalStorage
 
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/IvanBussio/workout-tracker-app.git
-cd workout-tracker-app
-```
-
----
+## 📌 Descripción
+Aplicación web para registrar entrenamientos.
+Permite crear, visualizar y eliminar entrenamientos.
+Los datos se guardan en el navegador usando LocalStorage.
 
 ### 2. Backend
 
