@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
-
-import {
-  getWorkouts,
-  createWorkout,
-  deleteWorkout,
-} from "../api/client";
-
+import { createWorkout, deleteWorkout, getWorkouts } from "../api/client";
 import { useAuth } from "../context/AuthContext";
 
 interface Workout {
-  id: string;
+  _id: string;
   name: string;
   type: string;
-  completed: boolean;
   user?: string;
   date?: string;
 }
@@ -20,16 +13,14 @@ interface Workout {
 export default function Home() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
 
-  const {
-    user,
-    login,
-    logout,
-  } = useAuth();
+  const { user, login } = useAuth();
 
-  // Cargar workouts desde backend
-  const loadWorkouts = async () => {
+  useEffect(() => {
+    fetchWorkouts();
+  }, []);
+
+  const fetchWorkouts = async () => {
     try {
       const data = await getWorkouts();
       setWorkouts(data);
@@ -38,170 +29,233 @@ export default function Home() {
     }
   };
 
-  // Cargar al iniciar
-  useEffect(() => {
-    loadWorkouts();
-  }, []);
-
-  // Crear workout
   const handleCreate = async () => {
     if (!name) return;
 
     try {
-      await createWorkout({
+      const newWorkout = await createWorkout({
         name,
         type: "Workout",
         user: user || "Guest",
         date: new Date().toLocaleDateString(),
       });
 
-      await loadWorkouts();
-
+      setWorkouts([newWorkout, ...workouts]);
       setName("");
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Eliminar workout
   const handleDelete = async (id: string) => {
     try {
       await deleteWorkout(id);
-
-      await loadWorkouts();
+      setWorkouts(workouts.filter((w) => w._id !== id));
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Login usuario
-  const handleLogin = () => {
-    if (!username) return;
-
-    login(username);
-
-    setUsername("");
-  };
-
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-8">
-      <div className="max-w-2xl mx-auto">
+    <div
+      style={{
+        maxWidth: "1200px",
+        margin: "0 auto",
+        padding: "50px 20px",
+      }}
+    >
+      {/* LOGIN CARD */}
+      <div
+        style={{
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "30px",
+          padding: "40px",
+          marginBottom: "40px",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 0 40px rgba(139,92,246,0.2)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "3rem",
+            marginBottom: "10px",
+            fontFamily: "Poppins",
+          }}
+        >
+          Welcome Back 👋
+        </h2>
 
-        {/* LOGIN */}
-        <div className="flex justify-end mb-6">
+        <p
+          style={{
+            color: "#cbd5e1",
+            marginBottom: "30px",
+            fontSize: "1.1rem",
+          }}
+        >
+          Inicia sesión para continuar tu progreso
+        </p>
 
-          {user ? (
+        <div
+          style={{
+            display: "flex",
+            gap: "15px",
+            flexWrap: "wrap",
+          }}
+        >
+          <input
+            placeholder="Tu nombre"
+            onChange={(e) => login(e.target.value)}
+            style={{
+              flex: 1,
+              minWidth: "250px",
+              padding: "18px",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              background: "rgba(255,255,255,0.05)",
+              color: "white",
+              fontSize: "1rem",
+            }}
+          />
 
-            <div className="flex items-center gap-4">
-
-              <span className="text-zinc-300">
-                👋 {user}
-              </span>
-
-              <button
-                onClick={logout}
-                className="bg-red-500 hover:bg-red-400 px-4 py-2 rounded-lg"
-              >
-                Logout
-              </button>
-
-            </div>
-
-          ) : (
-
-            <div className="flex gap-3">
-
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Tu nombre"
-                className="bg-zinc-800 text-white px-4 py-2 rounded-xl outline-none"
-              />
-
-              <button
-                onClick={handleLogin}
-                className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-xl"
-              >
-                Login
-              </button>
-
-            </div>
-
-          )}
-
+          <button
+            style={{
+              padding: "18px 35px",
+              borderRadius: "16px",
+              background:
+                "linear-gradient(to right, #7c3aed, #ec4899)",
+              color: "white",
+              fontWeight: "600",
+              fontSize: "1rem",
+            }}
+          >
+            Login
+          </button>
         </div>
+      </div>
 
-        {/* TITLE */}
-        <h1 className="text-5xl font-bold mb-8 text-center">
-          Workout Tracker 💪
-        </h1>
+      {/* CREATE WORKOUT */}
+      <div
+        style={{
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "30px",
+          padding: "40px",
+          marginBottom: "40px",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 0 40px rgba(16,185,129,0.15)",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "2.5rem",
+            marginBottom: "10px",
+            fontFamily: "Poppins",
+          }}
+        >
+          Create Workout 🏋️
+        </h2>
 
-        {/* CREATE WORKOUT */}
-        <div className="bg-zinc-900 p-6 rounded-2xl shadow-lg mb-8">
+        <p
+          style={{
+            color: "#cbd5e1",
+            marginBottom: "30px",
+          }}
+        >
+          Registrá tus entrenamientos y progresá cada semana
+        </p>
 
-          <div className="flex gap-3">
+        <div
+          style={{
+            display: "flex",
+            gap: "15px",
+            flexWrap: "wrap",
+          }}
+        >
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Nombre del workout"
+            style={{
+              flex: 1,
+              minWidth: "250px",
+              padding: "18px",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.1)",
+              background: "rgba(255,255,255,0.05)",
+              color: "white",
+              fontSize: "1rem",
+            }}
+          />
 
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nombre del workout"
-              className="flex-1 bg-zinc-800 text-white px-4 py-3 rounded-xl outline-none"
-            />
+          <button
+            onClick={handleCreate}
+            style={{
+              padding: "18px 35px",
+              borderRadius: "16px",
+              background:
+                "linear-gradient(to right, #10b981, #14b8a6)",
+              color: "white",
+              fontWeight: "600",
+              fontSize: "1rem",
+            }}
+          >
+            Crear
+          </button>
+        </div>
+      </div>
+
+      {/* WORKOUTS */}
+      <div
+        style={{
+          display: "grid",
+          gap: "20px",
+        }}
+      >
+        {workouts.map((w) => (
+          <div
+            key={w._id}
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "25px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <div>
+              <h3
+                style={{
+                  fontSize: "1.4rem",
+                  marginBottom: "6px",
+                }}
+              >
+                {w.name}
+              </h3>
+
+              <p style={{ color: "#94a3b8" }}>
+                {w.user} • {w.date}
+              </p>
+            </div>
 
             <button
-              onClick={handleCreate}
-              className="bg-blue-600 hover:bg-blue-500 px-5 py-3 rounded-xl font-semibold transition"
+              onClick={() => handleDelete(w._id)}
+              style={{
+                background:
+                  "linear-gradient(to right, #ef4444, #dc2626)",
+                padding: "12px 18px",
+                borderRadius: "12px",
+                color: "white",
+                fontWeight: "600",
+              }}
             >
-              Crear
+              Delete
             </button>
-
           </div>
-
-        </div>
-
-        {/* WORKOUTS */}
-        <div className="space-y-4">
-
-          {workouts.map((w) => (
-
-            <div
-              key={w.id}
-              className="bg-zinc-900 p-5 rounded-2xl flex items-center justify-between shadow-md"
-            >
-
-              <div>
-
-                <h2 className="text-xl font-semibold">
-                  {w.name}
-                </h2>
-
-                <p className="text-zinc-400 text-sm">
-                  {w.type}
-                </p>
-
-                <p className="text-zinc-500 text-xs mt-1">
-                  📅 {w.date}
-                </p>
-
-                <p className="text-zinc-500 text-xs">
-                  👤 {w.user}
-                </p>
-
-              </div>
-
-              <button
-                onClick={() => handleDelete(w.id)}
-                className="bg-red-500 hover:bg-red-400 px-4 py-2 rounded-lg transition"
-              >
-                ✕
-              </button>
-
-            </div>
-
-          ))}
-
-        </div>
-
+        ))}
       </div>
     </div>
   );
