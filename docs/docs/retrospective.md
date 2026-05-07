@@ -24,4 +24,4 @@ Utilicé IA para resolver errores técnicos, mejorar la estructura del proyecto 
 
 ## Conclusión
 
-Este proyecto me ayudó a entender mejor el desarrollo web moderno y a aplicar buenas prácticas en la organización del código y despliegue de aplicaciones.
+Este proyecto me ayudó a entender mejor el desarrollo web moderno y a aplicar buenas prácticas en la organización del código y despliegue de aplicaciones. 

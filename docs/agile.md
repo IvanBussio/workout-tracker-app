@@ -1,6 +1,6 @@
 # 🧠 Metodologías de desarrollo: Agile, Scrum y Kanban
 
-## 📌 ¿Qué es Agile?
+##  ¿Qué es Agile?
 
 Agile es una metodología de desarrollo de software basada en la flexibilidad, la colaboración y la entrega continua de valor.
 
@@ -10,7 +10,7 @@ En lugar de desarrollar todo el proyecto de una sola vez, Agile propone dividir 
 
 ---
 
-## 🎯 Objetivo de Agile
+##  Objetivo de Agile
 
 - Adaptarse rápidamente a cambios en los requisitos
 - Entregar valor al usuario de forma continua
@@ -20,7 +20,7 @@ En lugar de desarrollar todo el proyecto de una sola vez, Agile propone dividir 
 
 ---
 
-## 🧩 ¿Qué es Scrum?
+##  ¿Qué es Scrum?
 
 Scrum es un framework dentro de Agile que organiza el trabajo en ciclos llamados *sprints*.
 
@@ -36,7 +36,7 @@ Cada sprint es un periodo corto de tiempo (normalmente entre 1 y 4 semanas) en e
 
 ---
 
-## 🔁 Conceptos principales de Scrum
+##  Conceptos principales de Scrum
 
 - **Sprint:** ciclo de trabajo corto con objetivos definidos
 - **Backlog:** lista de tareas o funcionalidades pendientes
@@ -55,7 +55,7 @@ Se basa en un tablero donde las tareas se organizan en columnas que representan 
 
 ---
 
-## 🧱 Cómo se usa Kanban
+##  Cómo se usa Kanban
 
 Un tablero típico tiene columnas como:
 
@@ -69,7 +69,7 @@ Las tareas se mueven entre columnas a medida que avanzan.
 
 ---
 
-## ⚖️ Diferencias entre Scrum y Kanban
+##  Diferencias entre Scrum y Kanban
 
 | Scrum | Kanban |
 |------|--------|
@@ -81,7 +81,7 @@ Las tareas se mueven entre columnas a medida que avanzan.
 
 ---
 
-## 🧠 ¿Cuándo usar cada metodología?
+##  ¿Cuándo usar cada metodología?
 
 ### Scrum
 
@@ -101,7 +101,7 @@ Se utiliza cuando:
 
 ---
 
-## 📌 Conclusión
+##  Conclusión
 
 Las metodologías Agile, Scrum y Kanban permiten mejorar la organización del desarrollo de software, facilitando la adaptación a cambios y la entrega continua de valor.
 

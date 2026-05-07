@@ -1,6 +1,6 @@
-# 🏗️ Arquitectura de la aplicación
+#  Arquitectura de la aplicación
 
-## 📌 Descripción general
+##  Descripción general
 
 La aplicación sigue una arquitectura fullstack separada en dos partes principales:
 
@@ -11,7 +11,7 @@ Ambas partes se comunican a través de una API REST.
 
 ---
 
-## 🧩 Estructura del frontend
+##  Estructura del frontend
 
 El frontend está organizado en carpetas:
 
@@ -24,7 +24,7 @@ El componente principal es `Home.tsx`, que gestiona la interacción con el usuar
 
 ---
 
-## ⚙️ Gestión de estado
+##  Gestión de estado
 
 Se utiliza:
 
@@ -35,7 +35,7 @@ El estado se mantiene en el frontend y se sincroniza con el backend.
 
 ---
 
-## 🌐 API REST
+##  API REST
 
 El backend expone endpoints REST:
 
@@ -45,7 +45,7 @@ El backend expone endpoints REST:
 
 ---
 
-## 🧱 Arquitectura del backend
+##  Arquitectura del backend
 
 El backend sigue una arquitectura por capas:
 
@@ -56,7 +56,7 @@ El backend sigue una arquitectura por capas:
 
 ---
 
-## 🔄 Flujo de datos
+##  Flujo de datos
 
 1. El usuario interactúa con el frontend
 2. React envía una petición a la API
@@ -68,7 +68,7 @@ El backend sigue una arquitectura por capas:
 
 ---
 
-## 💾 Persistencia de datos
+##  Persistencia de datos
 
 Actualmente los datos se almacenan en memoria en el backend.
 
@@ -78,7 +78,7 @@ Esto significa que:
 
 ---
 
-## 🧠 Decisiones técnicas
+##  Decisiones técnicas
 
 - Separación frontend/backend → mejor escalabilidad
 - Arquitectura por capas → código más organizado
@@ -87,6 +87,6 @@ Esto significa que:
 
 ---
 
-## 📌 Conclusión
+##  Conclusión
 
 La aplicación está diseñada siguiendo buenas prácticas de desarrollo fullstack, separando responsabilidades y facilitando la escalabilidad futura.
