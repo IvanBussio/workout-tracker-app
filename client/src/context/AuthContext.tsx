@@ -19,7 +19,6 @@ export function AuthProvider({
 }: {
   children: ReactNode;
 }) {
-
   const [user, setUser] = useState<string | null>(
     localStorage.getItem("user")
   );
