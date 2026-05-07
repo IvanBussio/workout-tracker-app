@@ -13,6 +13,7 @@ interface Workout {
 export default function Home() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   const { user, login } = useAuth();
 
@@ -27,6 +28,13 @@ export default function Home() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleLogin = () => {
+    if (!username.trim()) return;
+
+    login(username);
+    setUsername("");
   };
 
   const handleCreate = async () => {
@@ -62,6 +70,7 @@ export default function Home() {
         maxWidth: "1200px",
         margin: "0 auto",
         padding: "50px 20px",
+        color: "inherit",
       }}
     >
       {/* LOGIN CARD */}
@@ -83,12 +92,12 @@ export default function Home() {
             fontFamily: "Poppins",
           }}
         >
-          Welcome Back 👋
+          Welcome Back
         </h2>
 
         <p
           style={{
-            color: "#cbd5e1",
+            color: "#94a3b8",
             marginBottom: "30px",
             fontSize: "1.1rem",
           }}
@@ -104,8 +113,14 @@ export default function Home() {
           }}
         >
           <input
+            value={username}
             placeholder="Tu nombre"
-            onChange={(e) => login(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleLogin();
+              }
+            }}
             style={{
               flex: 1,
               minWidth: "250px",
@@ -113,15 +128,18 @@ export default function Home() {
               borderRadius: "16px",
               border: "1px solid rgba(255,255,255,0.1)",
               background: "rgba(255,255,255,0.05)",
-              color: "white",
+              color: "inherit",
               fontSize: "1rem",
             }}
           />
 
           <button
+            onClick={handleLogin}
             style={{
               padding: "18px 35px",
               borderRadius: "16px",
+              border: "none",
+              cursor: "pointer",
               background:
                 "linear-gradient(to right, #7c3aed, #ec4899)",
               color: "white",
@@ -132,6 +150,18 @@ export default function Home() {
             Login
           </button>
         </div>
+
+        {user && (
+          <p
+            style={{
+              marginTop: "20px",
+              color: "#10b981",
+              fontWeight: "600",
+            }}
+          >
+            Sesión iniciada como {user}
+          </p>
+        )}
       </div>
 
       {/* CREATE WORKOUT */}
@@ -153,12 +183,12 @@ export default function Home() {
             fontFamily: "Poppins",
           }}
         >
-          Create Workout 🏋️
+          Create Workout
         </h2>
 
         <p
           style={{
-            color: "#cbd5e1",
+            color: "#94a3b8",
             marginBottom: "30px",
           }}
         >
@@ -175,6 +205,11 @@ export default function Home() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleCreate();
+              }
+            }}
             placeholder="Nombre del workout"
             style={{
               flex: 1,
@@ -183,7 +218,7 @@ export default function Home() {
               borderRadius: "16px",
               border: "1px solid rgba(255,255,255,0.1)",
               background: "rgba(255,255,255,0.05)",
-              color: "white",
+              color: "inherit",
               fontSize: "1rem",
             }}
           />
@@ -193,6 +228,8 @@ export default function Home() {
             style={{
               padding: "18px 35px",
               borderRadius: "16px",
+              border: "none",
+              cursor: "pointer",
               background:
                 "linear-gradient(to right, #10b981, #14b8a6)",
               color: "white",
@@ -203,6 +240,54 @@ export default function Home() {
             Crear
           </button>
         </div>
+      </div>
+
+      {/* STATS */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "20px",
+          marginBottom: "40px",
+        }}
+      >
+        {[
+          { title: "Workouts", value: workouts.length, color: "#8b5cf6" },
+          { title: "User", value: user || "Guest", color: "#06b6d4" },
+          { title: "Streak", value: "7 Days", color: "#10b981" },
+          { title: "Calories", value: "2.4k", color: "#f97316" },
+        ].map((stat, index) => (
+          <div
+            key={index}
+            style={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "24px",
+              padding: "25px",
+              backdropFilter: "blur(10px)",
+              boxShadow: `0 0 30px ${stat.color}20`,
+            }}
+          >
+            <p
+              style={{
+                color: "#94a3b8",
+                marginBottom: "10px",
+              }}
+            >
+              {stat.title}
+            </p>
+
+            <h2
+              style={{
+                fontSize: "2rem",
+                fontWeight: "700",
+                color: stat.color,
+              }}
+            >
+              {stat.value}
+            </h2>
+          </div>
+        ))}
       </div>
 
       {/* WORKOUTS */}
@@ -248,6 +333,8 @@ export default function Home() {
                   "linear-gradient(to right, #ef4444, #dc2626)",
                 padding: "12px 18px",
                 borderRadius: "12px",
+                border: "none",
+                cursor: "pointer",
                 color: "white",
                 fontWeight: "600",
               }}
@@ -257,6 +344,18 @@ export default function Home() {
           </div>
         ))}
       </div>
+
+      {/* FOOTER */}
+      <footer
+        style={{
+          marginTop: "60px",
+          textAlign: "center",
+          color: "#64748b",
+          paddingBottom: "30px",
+        }}
+      >
+        Built and designed by Ivan Bussio
+      </footer>
     </div>
   );
 }
