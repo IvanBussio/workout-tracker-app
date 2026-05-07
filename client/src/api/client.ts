@@ -9,7 +9,9 @@ export const getWorkouts = async () => {
 export const createWorkout = async (data: {
   name: string;
   type: string;
-}) => {
+  user?: string;
+  date?: string;
+}) =>
   const res = await fetch(BASE_URL, {
     method: 'POST',
     headers: {
