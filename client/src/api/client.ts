@@ -1,38 +1,50 @@
-const BASE_URL = "http://localhost:3000/api/v1/workouts";
-
-export const getWorkouts = async () => {
-  const res = await fetch(BASE_URL);
-
-  if (!res.ok) {
-    throw new Error("Error al obtener workouts");
-  }
-
-  return res.json();
-};
-
-export const createWorkout = async (data: {
+interface Workout {
+  _id: string;
   name: string;
   type: string;
   user?: string;
   date?: string;
-}) => {
-  const res = await fetch(BASE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+}
 
-  if (!res.ok) {
-    throw new Error("Error al crear workout");
-  }
+const STORAGE_KEY = "workouts";
 
-  return res.json();
+export const getWorkouts = async (): Promise<Workout[]> => {
+  const workouts = localStorage.getItem(STORAGE_KEY);
+
+  return workouts ? JSON.parse(workouts) : [];
 };
 
-export const deleteWorkout = async (id: string) => {
-  await fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-  });
+export const createWorkout = async (
+  data: Workout
+): Promise<Workout> => {
+  const workouts = await getWorkouts();
+
+  const newWorkout = {
+    ...data,
+    _id: crypto.randomUUID(),
+  };
+
+  const updated = [newWorkout, ...workouts];
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(updated)
+  );
+
+  return newWorkout;
+};
+
+export const deleteWorkout = async (
+  id: string
+): Promise<void> => {
+  const workouts = await getWorkouts();
+
+  const updated = workouts.filter(
+    (w) => w._id !== id
+  );
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(updated)
+  );
 };
