@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { createWorkout, deleteWorkout, getWorkouts } from "../api/client";
+import {
+  createWorkout,
+  deleteWorkout,
+  getWorkouts,
+} from "../api/client";
+
 import { useAuth } from "../context/AuthContext";
 
 interface Workout {
@@ -37,11 +42,12 @@ export default function Home() {
     setUsername("");
   };
 
-  const handleCreate = async () => {
-    if (!name) return;
+  const handleCreateWorkout = async () => {
+    if (!name.trim()) return;
 
     try {
       const newWorkout = await createWorkout({
+        _id: "",
         name,
         type: "Workout",
         user: user || "Guest",
@@ -52,13 +58,17 @@ export default function Home() {
       setName("");
     } catch (error) {
       console.error(error);
+      alert("Error creando workout");
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       await deleteWorkout(id);
-      setWorkouts(workouts.filter((w) => w._id !== id));
+
+      setWorkouts(
+        workouts.filter((workout) => workout._id !== id)
+      );
     } catch (error) {
       console.error(error);
     }
@@ -67,39 +77,36 @@ export default function Home() {
   return (
     <div
       style={{
-        maxWidth: "1200px",
+        maxWidth: "1100px",
         margin: "0 auto",
-        padding: "50px 20px",
-        color: "inherit",
+        padding: "40px 20px",
       }}
     >
-      {/* LOGIN CARD */}
       <div
         style={{
-          background: "rgba(255,255,255,0.05)",
+          background: "rgba(255,255,255,0.06)",
           border: "1px solid rgba(255,255,255,0.1)",
           borderRadius: "30px",
-          padding: "40px",
-          marginBottom: "40px",
+          padding: "35px",
           backdropFilter: "blur(12px)",
-          boxShadow: "0 0 40px rgba(139,92,246,0.2)",
+          marginBottom: "35px",
+          boxShadow: "0 0 40px rgba(59,130,246,0.15)",
         }}
       >
-        <h2
+        <h1
           style={{
             fontSize: "3rem",
+            fontWeight: "800",
             marginBottom: "10px",
-            fontFamily: "Poppins",
           }}
         >
           Welcome Back
-        </h2>
+        </h1>
 
         <p
           style={{
-            color: "#94a3b8",
+            opacity: 0.7,
             marginBottom: "30px",
-            fontSize: "1.1rem",
           }}
         >
           Inicia sesión para continuar tu progreso
@@ -113,9 +120,12 @@ export default function Home() {
           }}
         >
           <input
-            value={username}
+            type="text"
             placeholder="Tu nombre"
-            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+            onChange={(e) =>
+              setUsername(e.target.value)
+            }
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleLogin();
@@ -125,10 +135,10 @@ export default function Home() {
               flex: 1,
               minWidth: "250px",
               padding: "18px",
-              borderRadius: "16px",
+              borderRadius: "18px",
               border: "1px solid rgba(255,255,255,0.1)",
               background: "rgba(255,255,255,0.05)",
-              color: "inherit",
+              color: "white",
               fontSize: "1rem",
             }}
           />
@@ -137,13 +147,13 @@ export default function Home() {
             onClick={handleLogin}
             style={{
               padding: "18px 35px",
-              borderRadius: "16px",
+              borderRadius: "18px",
               border: "none",
               cursor: "pointer",
               background:
                 "linear-gradient(to right, #7c3aed, #ec4899)",
               color: "white",
-              fontWeight: "600",
+              fontWeight: "700",
               fontSize: "1rem",
             }}
           >
@@ -156,7 +166,7 @@ export default function Home() {
             style={{
               marginTop: "20px",
               color: "#10b981",
-              fontWeight: "600",
+              fontWeight: "700",
             }}
           >
             Sesión iniciada como {user}
@@ -164,23 +174,22 @@ export default function Home() {
         )}
       </div>
 
-      {/* CREATE WORKOUT */}
       <div
         style={{
-          background: "rgba(255,255,255,0.05)",
+          background: "rgba(255,255,255,0.06)",
           border: "1px solid rgba(255,255,255,0.1)",
           borderRadius: "30px",
-          padding: "40px",
-          marginBottom: "40px",
+          padding: "35px",
           backdropFilter: "blur(12px)",
+          marginBottom: "35px",
           boxShadow: "0 0 40px rgba(16,185,129,0.15)",
         }}
       >
         <h2
           style={{
-            fontSize: "2.5rem",
+            fontSize: "3rem",
+            fontWeight: "800",
             marginBottom: "10px",
-            fontFamily: "Poppins",
           }}
         >
           Create Workout
@@ -188,7 +197,7 @@ export default function Home() {
 
         <p
           style={{
-            color: "#94a3b8",
+            opacity: 0.7,
             marginBottom: "30px",
           }}
         >
@@ -203,37 +212,40 @@ export default function Home() {
           }}
         >
           <input
+            type="text"
+            placeholder="Nombre del workout"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) =>
+              setName(e.target.value)
+            }
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                handleCreate();
+                handleCreateWorkout();
               }
             }}
-            placeholder="Nombre del workout"
             style={{
               flex: 1,
               minWidth: "250px",
               padding: "18px",
-              borderRadius: "16px",
+              borderRadius: "18px",
               border: "1px solid rgba(255,255,255,0.1)",
               background: "rgba(255,255,255,0.05)",
-              color: "inherit",
+              color: "white",
               fontSize: "1rem",
             }}
           />
 
           <button
-            onClick={handleCreate}
+            onClick={handleCreateWorkout}
             style={{
               padding: "18px 35px",
-              borderRadius: "16px",
+              borderRadius: "18px",
               border: "none",
               cursor: "pointer",
               background:
-                "linear-gradient(to right, #10b981, #14b8a6)",
+                "linear-gradient(to right, #14b8a6, #22c55e)",
               color: "white",
-              fontWeight: "600",
+              fontWeight: "700",
               fontSize: "1rem",
             }}
           >
@@ -242,101 +254,146 @@ export default function Home() {
         </div>
       </div>
 
-      {/* STATS */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fit, minmax(220px, 1fr))",
           gap: "20px",
-          marginBottom: "40px",
+          marginBottom: "35px",
         }}
       >
-        {[
-          { title: "Workouts", value: workouts.length, color: "#8b5cf6" },
-          { title: "User", value: user || "Guest", color: "#06b6d4" },
-          { title: "Streak", value: "7 Days", color: "#10b981" },
-          { title: "Calories", value: "2.4k", color: "#f97316" },
-        ].map((stat, index) => (
-          <div
-            key={index}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.06)",
+            borderRadius: "24px",
+            padding: "30px",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <p style={{ opacity: 0.7 }}>Workouts</p>
+
+          <h2
             style={{
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "24px",
-              padding: "25px",
-              backdropFilter: "blur(10px)",
-              boxShadow: `0 0 30px ${stat.color}20`,
+              fontSize: "3rem",
+              color: "#8b5cf6",
             }}
           >
-            <p
-              style={{
-                color: "#94a3b8",
-                marginBottom: "10px",
-              }}
-            >
-              {stat.title}
-            </p>
+            {workouts.length}
+          </h2>
+        </div>
 
-            <h2
-              style={{
-                fontSize: "2rem",
-                fontWeight: "700",
-                color: stat.color,
-              }}
-            >
-              {stat.value}
-            </h2>
-          </div>
-        ))}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.06)",
+            borderRadius: "24px",
+            padding: "30px",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <p style={{ opacity: 0.7 }}>User</p>
+
+          <h2
+            style={{
+              fontSize: "2.3rem",
+              color: "#06b6d4",
+            }}
+          >
+            {user || "Guest"}
+          </h2>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255,255,255,0.06)",
+            borderRadius: "24px",
+            padding: "30px",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <p style={{ opacity: 0.7 }}>Streak</p>
+
+          <h2
+            style={{
+              fontSize: "3rem",
+              color: "#10b981",
+            }}
+          >
+            7 Days
+          </h2>
+        </div>
+
+        <div
+          style={{
+            background: "rgba(255,255,255,0.06)",
+            borderRadius: "24px",
+            padding: "30px",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <p style={{ opacity: 0.7 }}>Calories</p>
+
+          <h2
+            style={{
+              fontSize: "3rem",
+              color: "#f97316",
+            }}
+          >
+            2.4k
+          </h2>
+        </div>
       </div>
 
-      {/* WORKOUTS */}
       <div
         style={{
-          display: "grid",
+          display: "flex",
+          flexDirection: "column",
           gap: "20px",
         }}
       >
-        {workouts.map((w) => (
+        {workouts.map((workout) => (
           <div
-            key={w._id}
+            key={workout._id}
             style={{
-              background: "rgba(255,255,255,0.05)",
+              background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "24px",
               padding: "25px",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              backdropFilter: "blur(10px)",
+              flexWrap: "wrap",
+              gap: "15px",
             }}
           >
             <div>
               <h3
                 style={{
-                  fontSize: "1.4rem",
-                  marginBottom: "6px",
+                  fontSize: "1.5rem",
+                  marginBottom: "8px",
                 }}
               >
-                {w.name}
+                {workout.name}
               </h3>
 
-              <p style={{ color: "#94a3b8" }}>
-                {w.user} • {w.date}
+              <p style={{ opacity: 0.7 }}>
+                {workout.user} • {workout.date}
               </p>
             </div>
 
             <button
-              onClick={() => handleDelete(w._id)}
+              onClick={() =>
+                handleDelete(workout._id)
+              }
               style={{
-                background:
-                  "linear-gradient(to right, #ef4444, #dc2626)",
-                padding: "12px 18px",
-                borderRadius: "12px",
+                padding: "12px 22px",
+                borderRadius: "14px",
                 border: "none",
                 cursor: "pointer",
+                background:
+                  "linear-gradient(to right, #ef4444, #dc2626)",
                 color: "white",
-                fontWeight: "600",
+                fontWeight: "700",
               }}
             >
               Delete
@@ -345,16 +402,15 @@ export default function Home() {
         ))}
       </div>
 
-      {/* FOOTER */}
       <footer
         style={{
-          marginTop: "60px",
           textAlign: "center",
-          color: "#64748b",
-          paddingBottom: "30px",
+          marginTop: "60px",
+          opacity: 0.6,
+          paddingBottom: "20px",
         }}
       >
-        Built and designed by Ivan Bussio
+        Developed by Ivan Bussio
       </footer>
     </div>
   );
