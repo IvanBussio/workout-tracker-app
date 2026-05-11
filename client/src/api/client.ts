@@ -1,5 +1,5 @@
 interface Workout {
-  _id: string;
+  _id?: string;
   name: string;
   type: string;
   user?: string;
@@ -40,7 +40,7 @@ export const deleteWorkout = async (
   const workouts = await getWorkouts();
 
   const updated = workouts.filter(
-    (w) => w._id !== id
+    (workout) => workout._id !== id
   );
 
   localStorage.setItem(
