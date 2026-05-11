@@ -1,15 +1,27 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 
 import type { ReactNode } from "react";
 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  type User,
+} from "firebase/auth";
+
+import { auth } from "../firebase/firebase";
+
 interface AuthContextType {
-  user: string | null;
-  login: (username: string) => void;
-  logout: () => void;
+  user: User | null;
+  register: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -19,24 +31,47 @@ export function AuthProvider({
 }: {
   children: ReactNode;
 }) {
-  const [user, setUser] = useState<string | null>(
-    localStorage.getItem("user")
-  );
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = (username: string) => {
-    localStorage.setItem("user", username);
-    setUser(username);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const register = async (
+    email: string,
+    password: string
+  ) => {
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
   };
 
-  const logout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
+  const login = async (
+    email: string,
+    password: string
+  ) => {
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+  };
+
+  const logout = async () => {
+    await signOut(auth);
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        register,
         login,
         logout,
       }}
@@ -50,7 +85,9 @@ export const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error("useAuth must be used inside AuthProvider");
+    throw new Error(
+      "useAuth must be used inside AuthProvider"
+    );
   }
 
   return context;

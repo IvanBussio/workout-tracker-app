@@ -8,7 +8,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 
 interface Workout {
-  _id: string;
+  _id?: string;
   name: string;
   type: string;
   user?: string;
@@ -18,9 +18,19 @@ interface Workout {
 export default function Home() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
 
-  const { user, login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const {
+    user,
+    login,
+    register,
+    logout,
+  } = useAuth();
 
   useEffect(() => {
     fetchWorkouts();
@@ -35,11 +45,36 @@ export default function Home() {
     }
   };
 
-  const handleLogin = () => {
-    if (!username.trim()) return;
+  const handleRegister = async () => {
+    try {
+      setLoading(true);
+      setError("");
 
-    login(username);
-    setUsername("");
+      await register(email, password);
+
+      setEmail("");
+      setPassword("");
+    } catch (error: any) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      await login(email, password);
+
+      setEmail("");
+      setPassword("");
+    } catch (error: any) {
+      setError("Credenciales inválidas");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCreateWorkout = async () => {
@@ -47,27 +82,33 @@ export default function Home() {
 
     try {
       const newWorkout = await createWorkout({
-        _id: "",
         name,
-        type: "Workout",
-        user: user || "Guest",
-        date: new Date().toLocaleDateString(),
+        type: "strength",
+        user: user?.email || "anonymous",
+        date: new Date().toISOString(),
       });
 
-      setWorkouts([newWorkout, ...workouts]);
+      setWorkouts((prev) => [
+        newWorkout,
+        ...prev,
+      ]);
+
       setName("");
     } catch (error) {
       console.error(error);
-      alert("Error creando workout");
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteWorkout = async (
+    id?: string
+  ) => {
+    if (!id) return;
+
     try {
       await deleteWorkout(id);
 
-      setWorkouts(
-        workouts.filter((workout) => workout._id !== id)
+      setWorkouts((prev) =>
+        prev.filter((workout) => workout._id !== id)
       );
     } catch (error) {
       console.error(error);
@@ -75,142 +116,94 @@ export default function Home() {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "1100px",
-        margin: "0 auto",
-        padding: "40px 20px",
-      }}
-    >
-      <div
-        style={{
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: "30px",
-          padding: "35px",
-          backdropFilter: "blur(12px)",
-          marginBottom: "35px",
-          boxShadow: "0 0 40px rgba(59,130,246,0.15)",
-        }}
-      >
-        <h1
-          style={{
-            fontSize: "3rem",
-            fontWeight: "800",
-            marginBottom: "10px",
-          }}
-        >
+    <div className="page-container">
+      <section className="glass-card">
+        <h1 className="title">
           Welcome Back
         </h1>
 
-        <p
-          style={{
-            opacity: 0.7,
-            marginBottom: "30px",
-          }}
-        >
-          Inicia sesión para continuar tu progreso
+        <p className="subtitle">
+          Accedé a tu cuenta fitness
         </p>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            flexWrap: "wrap",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Tu nombre"
-            value={username}
-            onChange={(e) =>
-              setUsername(e.target.value)
-            }
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleLogin();
-              }
-            }}
-            style={{
-              flex: 1,
-              minWidth: "250px",
-              padding: "18px",
-              borderRadius: "18px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.05)",
-              color: "white",
-              fontSize: "1rem",
-            }}
-          />
+        {!user ? (
+          <>
+            <div className="form-group">
+              <input
+                type="email"
+                placeholder="Tu email"
+                value={email}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
+                className="input"
+              />
 
-          <button
-            onClick={handleLogin}
-            style={{
-              padding: "18px 35px",
-              borderRadius: "18px",
-              border: "none",
-              cursor: "pointer",
-              background:
-                "linear-gradient(to right, #7c3aed, #ec4899)",
-              color: "white",
-              fontWeight: "700",
-              fontSize: "1rem",
-            }}
-          >
-            Login
-          </button>
-        </div>
+              <input
+                type="password"
+                placeholder="Tu contraseña"
+                value={password}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
+                className="input"
+              />
+            </div>
 
-        {user && (
-          <p
-            style={{
-              marginTop: "20px",
-              color: "#10b981",
-              fontWeight: "700",
-            }}
-          >
-            Sesión iniciada como {user}
+            <div className="button-row">
+              <button
+                onClick={handleLogin}
+                className="login-button"
+                disabled={loading}
+              >
+                Login
+              </button>
+
+              <button
+                onClick={handleRegister}
+                className="create-button"
+                disabled={loading}
+              >
+                Register
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="logged-box">
+            <p className="logged-user">
+              Sesión iniciada como:
+            </p>
+
+            <h2>
+              {user.email}
+            </h2>
+
+            <button
+              onClick={logout}
+              className="delete-button"
+            >
+              Logout
+            </button>
+          </div>
+        )}
+
+        {error && (
+          <p className="error-text">
+            {error}
           </p>
         )}
-      </div>
+      </section>
 
-      <div
-        style={{
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: "30px",
-          padding: "35px",
-          backdropFilter: "blur(12px)",
-          marginBottom: "35px",
-          boxShadow: "0 0 40px rgba(16,185,129,0.15)",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "3rem",
-            fontWeight: "800",
-            marginBottom: "10px",
-          }}
-        >
+      <section className="glass-card">
+        <h1 className="title">
           Create Workout
-        </h2>
+        </h1>
 
-        <p
-          style={{
-            opacity: 0.7,
-            marginBottom: "30px",
-          }}
-        >
-          Registrá tus entrenamientos y progresá cada semana
+        <p className="subtitle">
+          Registrá entrenamientos reales
         </p>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "15px",
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="workout-form">
           <input
             type="text"
             placeholder="Nombre del workout"
@@ -218,200 +211,70 @@ export default function Home() {
             onChange={(e) =>
               setName(e.target.value)
             }
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleCreateWorkout();
-              }
-            }}
-            style={{
-              flex: 1,
-              minWidth: "250px",
-              padding: "18px",
-              borderRadius: "18px",
-              border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.05)",
-              color: "white",
-              fontSize: "1rem",
-            }}
+            className="input"
           />
 
           <button
             onClick={handleCreateWorkout}
-            style={{
-              padding: "18px 35px",
-              borderRadius: "18px",
-              border: "none",
-              cursor: "pointer",
-              background:
-                "linear-gradient(to right, #14b8a6, #22c55e)",
-              color: "white",
-              fontWeight: "700",
-              fontSize: "1rem",
-            }}
+            className="create-button"
           >
             Crear
           </button>
         </div>
-      </div>
+      </section>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "20px",
-          marginBottom: "35px",
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            borderRadius: "24px",
-            padding: "30px",
-            border: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <p style={{ opacity: 0.7 }}>Workouts</p>
+      <section className="stats-grid">
+        <div className="stat-card">
+          <span>Workouts</span>
+          <h2>{workouts.length}</h2>
+        </div>
 
-          <h2
-            style={{
-              fontSize: "3rem",
-              color: "#8b5cf6",
-            }}
-          >
-            {workouts.length}
+        <div className="stat-card">
+          <span>User</span>
+          <h2>
+            {user?.email
+              ? user.email.split("@")[0]
+              : "Guest"}
           </h2>
         </div>
 
-        <div
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            borderRadius: "24px",
-            padding: "30px",
-            border: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <p style={{ opacity: 0.7 }}>User</p>
-
-          <h2
-            style={{
-              fontSize: "2.3rem",
-              color: "#06b6d4",
-            }}
-          >
-            {user || "Guest"}
+        <div className="stat-card">
+          <span>Status</span>
+          <h2>
+            {user
+              ? "Online"
+              : "Offline"}
           </h2>
         </div>
+      </section>
 
-        <div
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            borderRadius: "24px",
-            padding: "30px",
-            border: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <p style={{ opacity: 0.7 }}>Streak</p>
-
-          <h2
-            style={{
-              fontSize: "3rem",
-              color: "#10b981",
-            }}
-          >
-            7 Days
-          </h2>
-        </div>
-
-        <div
-          style={{
-            background: "rgba(255,255,255,0.06)",
-            borderRadius: "24px",
-            padding: "30px",
-            border: "1px solid rgba(255,255,255,0.08)",
-          }}
-        >
-          <p style={{ opacity: 0.7 }}>Calories</p>
-
-          <h2
-            style={{
-              fontSize: "3rem",
-              color: "#f97316",
-            }}
-          >
-            2.4k
-          </h2>
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
+      <section className="workouts-list">
         {workouts.map((workout) => (
           <div
             key={workout._id}
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "24px",
-              padding: "25px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "15px",
-            }}
+            className="workout-card"
           >
             <div>
-              <h3
-                style={{
-                  fontSize: "1.5rem",
-                  marginBottom: "8px",
-                }}
-              >
-                {workout.name}
-              </h3>
+              <h3>{workout.name}</h3>
 
-              <p style={{ opacity: 0.7 }}>
-                {workout.user} • {workout.date}
+              <p>
+                {workout.user}
               </p>
             </div>
 
             <button
               onClick={() =>
-                handleDelete(workout._id)
+                handleDeleteWorkout(
+                  workout._id
+                )
               }
-              style={{
-                padding: "12px 22px",
-                borderRadius: "14px",
-                border: "none",
-                cursor: "pointer",
-                background:
-                  "linear-gradient(to right, #ef4444, #dc2626)",
-                color: "white",
-                fontWeight: "700",
-              }}
+              className="delete-button"
             >
               Delete
             </button>
           </div>
         ))}
-      </div>
-
-      <footer
-        style={{
-          textAlign: "center",
-          marginTop: "60px",
-          opacity: 0.6,
-          paddingBottom: "20px",
-        }}
-      >
-        Developed by Ivan Bussio
-      </footer>
+      </section>
     </div>
   );
 }
