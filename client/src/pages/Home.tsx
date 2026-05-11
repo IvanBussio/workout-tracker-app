@@ -8,11 +8,11 @@ import {
 import { useAuth } from "../context/AuthContext";
 
 interface Workout {
-  _id?: string;
+  id?: string;
   name: string;
-  type: string;
-  user?: string;
-  date?: string;
+  type?: string;
+  username?: string;
+  created_at?: string;
 }
 
 export default function Home() {
@@ -84,9 +84,10 @@ export default function Home() {
       const newWorkout = await createWorkout({
         name,
         type: "strength",
-        user: user?.email || "anonymous",
-        date: new Date().toISOString(),
+        username: user?.email || "anonymous",
       });
+
+      if (!newWorkout) return;
 
       setWorkouts((prev) => [
         newWorkout,
@@ -108,7 +109,9 @@ export default function Home() {
       await deleteWorkout(id);
 
       setWorkouts((prev) =>
-        prev.filter((workout) => workout._id !== id)
+        prev.filter(
+          (workout) => workout.id !== id
+        )
       );
     } catch (error) {
       console.error(error);
@@ -231,6 +234,7 @@ export default function Home() {
 
         <div className="stat-card">
           <span>User</span>
+
           <h2>
             {user?.email
               ? user.email.split("@")[0]
@@ -240,6 +244,7 @@ export default function Home() {
 
         <div className="stat-card">
           <span>Status</span>
+
           <h2>
             {user
               ? "Online"
@@ -251,21 +256,21 @@ export default function Home() {
       <section className="workouts-list">
         {workouts.map((workout) => (
           <div
-            key={workout._id}
+            key={workout.id}
             className="workout-card"
           >
             <div>
               <h3>{workout.name}</h3>
 
               <p>
-                {workout.user}
+                {workout.username}
               </p>
             </div>
 
             <button
               onClick={() =>
                 handleDeleteWorkout(
-                  workout._id
+                  workout.id
                 )
               }
               className="delete-button"

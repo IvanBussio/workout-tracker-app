@@ -1,50 +1,56 @@
-interface Workout {
-  _id?: string;
+import { supabase } from "../lib/supabase";
+export interface Workout {
+  id?: string;
   name: string;
-  type: string;
-  user?: string;
-  date?: string;
+  type?: string;
+  username?: string;
+  created_at?: string;
 }
 
-const STORAGE_KEY = "workouts";
+export const getWorkouts = async (): Promise<
+  Workout[]
+> => {
+  const { data, error } = await supabase
+    .from("workouts")
+    .select("*")
+    .order("created_at", {
+      ascending: false,
+    });
 
-export const getWorkouts = async (): Promise<Workout[]> => {
-  const workouts = localStorage.getItem(STORAGE_KEY);
+  if (error) {
+    console.error(error);
+    return [];
+  }
 
-  return workouts ? JSON.parse(workouts) : [];
+  return data || [];
 };
 
 export const createWorkout = async (
-  data: Workout
-): Promise<Workout> => {
-  const workouts = await getWorkouts();
+  workout: Workout
+): Promise<Workout | null> => {
+  const { data, error } = await supabase
+    .from("workouts")
+    .insert([workout])
+    .select()
+    .single();
 
-  const newWorkout = {
-    ...data,
-    _id: crypto.randomUUID(),
-  };
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
-  const updated = [newWorkout, ...workouts];
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(updated)
-  );
-
-  return newWorkout;
+  return data;
 };
 
 export const deleteWorkout = async (
   id: string
 ): Promise<void> => {
-  const workouts = await getWorkouts();
+  const { error } = await supabase
+    .from("workouts")
+    .delete()
+    .eq("id", id);
 
-  const updated = workouts.filter(
-    (workout) => workout._id !== id
-  );
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(updated)
-  );
+  if (error) {
+    console.error(error);
+  }
 };
