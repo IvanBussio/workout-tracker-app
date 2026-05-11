@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDijisSiDtKZuT2sq37ayNDDpnd0dFSnhc",
-  authDomain: "workout-tracker-e438e.firebaseapp.com",
-  projectId: "workout-tracker-e438e",
-  storageBucket: "workout-tracker-e438e.firebasestorage.app",
-  messagingSenderId: "69653636094",
-  appId: "1:69653636094:web:8ef750b118e6576043d6af",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
