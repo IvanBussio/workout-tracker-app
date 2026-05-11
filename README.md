@@ -1,66 +1,102 @@
 # Workout Tracker App
 
-## Descripción
+Workout Tracker es una aplicación web fullstack desarrollada para registrar y gestionar entrenamientos de manera simple, rápida y moderna.
 
-Workout Tracker es una aplicación web fullstack que permite crear, visualizar y eliminar entrenamientos de forma sencilla. Está diseñada para ser rápida, minimalista y fácil de usar.
+La aplicación permite crear, visualizar y eliminar workouts mediante una interfaz responsive y minimalista.
 
 ---
 
-## Tecnologías utilizadas
+# 🚀 Deploy
 
-### Frontend
+Frontend desplegado en Vercel:
+
+https://workout-tracker-app-z21p.vercel.app/
+
+---
+
+# 📋 Trello
+
+https://trello.com/b/s94mUlLY/workout-tracker-app
+
+---
+
+# 📂 Repositorio
+
+https://github.com/IvanBussio/workout-tracker-app
+
+---
+
+# 🛠️ Tecnologías utilizadas
+
+## Frontend
 - React
 - TypeScript
 - Vite
+- React Router
+- Firebase Authentication
+- LocalStorage
 
-### Backend
+## Backend
 - Node.js
 - Express
 
 ---
 
-## Arquitectura
+# 🏗️ Arquitectura
 
 El proyecto sigue una arquitectura fullstack separada:
 
-- `client/` → aplicación frontend en React
-- `server/` → API REST con Express
-- `docs/` → documentación del proyecto
+client/ → frontend React  
+server/ → API REST Express  
+docs/ → documentación  
 
-En el backend se aplica arquitectura por capas:
+## Backend por capas
 
-- `routes/` → definición de endpoints
-- `controllers/` → manejo de requests y responses
-- `services/` → lógica de negocio
-- `config/` → configuración del entorno
+routes/ → endpoints  
+controllers/ → requests/responses  
+services/ → lógica de negocio  
+config/ → configuración  
 
 ---
 
-## API
+# ✨ Funcionalidades
 
-# Workout Tracker App
+- Registro y login de usuarios con Firebase Authentication
+- Crear entrenamientos
+- Visualizar entrenamientos
+- Eliminar entrenamientos
+- Dark / Light mode
+- Responsive mobile design
+- Persistencia local de datos
+- Navegación entre páginas
+- UI moderna tipo glassmorphism
 
-## 🚀 Despliegue
-https://workout-tracker-app-z21p.vercel.app/
+---
 
-## 📋 Trello
-https://trello.com/b/s94mUlLY/workout-tracker-app
+# 📱 Secciones
 
-## 📂 Repositorio
-https://github.com/IvanBussio/workout-tracker-app
+## Home
+- Workout del día
+- Crear entrenamientos
+- Estadísticas rápidas
 
-## 🛠️ Tecnologías
-- React
-- TypeScript
-- Vite
-- LocalStorage
+## History
+- Historial de entrenamientos
 
-## 📌 Descripción
-Aplicación web para registrar entrenamientos.
-Permite crear, visualizar y eliminar entrenamientos.
-Los datos se guardan en el navegador usando LocalStorage.
+## Profile
+- Gestión básica de usuario
 
-### 2. Backend
+---
+
+# ⚙️ Instalación
+
+## 1. Clonar repositorio
+
+```bash
+git clone https://github.com/IvanBussio/workout-tracker-app.git
+```
+
+## 2. Backend
 
 ```bash
 cd server
@@ -69,11 +105,12 @@ npm run dev
 ```
 
 Servidor disponible en:
+
+```txt
 http://localhost:3000
+```
 
----
-
-### 3. Frontend
+## 3. Frontend
 
 ```bash
 cd client
@@ -82,44 +119,55 @@ npm run dev
 ```
 
 Aplicación disponible en:
+
+```txt
 http://localhost:5173
+```
 
 ---
 
-## Funcionalidades
-
-- Crear entrenamientos
-- Visualizar lista de entrenamientos
-- Eliminar entrenamientos
-- Comunicación frontend-backend mediante API REST
-
----
-
-## Testing
+# 🧪 Testing
 
 Se realizaron pruebas manuales para validar:
 
 - Creación de entrenamientos
 - Eliminación de entrenamientos
-- Comunicación con la API
+- Login y registro
+- Comunicación frontend-backend
+- Responsive mobile
 - Manejo de errores
 
-Más detalles en `docs/testing.md`.
+Más detalles disponibles en:
+
+docs/testing.md
 
 ---
 
-## Documentación
+# 📚 Documentación
 
-El proyecto incluye documentación en la carpeta `docs/`:
+La carpeta docs/ incluye:
 
-- `agile.md` → metodologías de desarrollo
-- `idea.md` → definición del proyecto
-- `design.md` → arquitectura
-- `api.md` → endpoints
-- `testing.md` → pruebas realizadas
+- agile.md → metodología de trabajo
+- idea.md → idea del proyecto
+- design.md → arquitectura
+- api.md → endpoints
+- testing.md → pruebas realizadas
 
 ---
 
-## Conclusión
+# 🔮 Mejoras futuras
 
-Este proyecto demuestra el desarrollo de una aplicación fullstack aplicando buenas prácticas, separación de responsabilidades y comunicación cliente-servidor mediante API REST.
+- Integración Supabase
+- Base de datos persistente cloud
+- Historial avanzado
+- Analytics y gráficos
+- Ejercicios personalizados
+- Protected routes
+- Notificaciones
+- Dashboard fitness
+
+---
+
+# 👨‍💻 Autor
+
+Desarrollado por Ivan Bussio
