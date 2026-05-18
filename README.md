@@ -10,7 +10,7 @@ La aplicación permite crear, visualizar y eliminar workouts mediante una interf
 
 Frontend desplegado en Vercel:
 
-https://workout-tracker-app-z21p.vercel.app/
+https://workout-tracker-app-uoxc.vercel.app/
 
 ---
 
