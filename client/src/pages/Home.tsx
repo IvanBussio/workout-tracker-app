@@ -81,12 +81,12 @@ export default function Home() {
     if (!name.trim()) return;
 
     try {
-      const newWorkout = await createWorkout({
-        name,
-        type: "strength",
-        username: user?.email || "anonymous",
-      });
-
+ const newWorkout = await createWorkout({
+  name,
+  type: "strength",
+  username: user?.email || "anonymous",
+  user_id: user?.uid || null,
+});
       if (!newWorkout) return;
 
       setWorkouts((prev) => [

@@ -1,9 +1,11 @@
 import { supabase } from "../lib/supabase";
+
 export interface Workout {
   id?: string;
   name: string;
   type?: string;
   username?: string;
+  user_id?: string | null;
   created_at?: string;
 }
 
