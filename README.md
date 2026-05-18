@@ -2,6 +2,14 @@
 
 Fullstack fitness tracking application built with React, Express, Firebase Authentication and Supabase.
 
+## Links
+
+- Live Demo: https://workout-tracker-app-uoxc.vercel.app
+- GitHub Repository: https://github.com/IvanBussio/workout-tracker-app
+- Firebase: https://firebase.google.com/
+- Supabase: https://supabase.com/
+- Vercel: https://vercel.com/
+
 ---
 
 ## Features
