@@ -1,116 +1,96 @@
-# Workout Tracker App
+# Workout Tracker
 
-Workout Tracker es una aplicación web fullstack desarrollada para registrar y gestionar entrenamientos de manera simple, rápida y moderna.
-
-La aplicación permite crear, visualizar y eliminar workouts mediante una interfaz responsive y minimalista.
+Fullstack fitness tracking application built with React, Express, Firebase Authentication and Supabase.
 
 ---
 
-# 🚀 Deploy
+## Features
 
-Frontend desplegado en Vercel:
-
-https://workout-tracker-app-uoxc.vercel.app/
-
----
-
-# 📋 Trello
-
-https://trello.com/b/s94mUlLY/workout-tracker-app
-
----
-
-# 📂 Repositorio
-
-https://github.com/IvanBussio/workout-tracker-app
+- User registration and login
+- Firebase Authentication
+- Workout creation and deletion
+- Persistent workout storage
+- Responsive UI
+- Supabase database integration
+- REST API architecture
+- Express backend structure
+- Vercel deployment
 
 ---
 
-# 🛠️ Tecnologías utilizadas
+## Tech Stack
 
-## Frontend
+### Frontend
 - React
 - TypeScript
 - Vite
-- React Router
-- Firebase Authentication
-- LocalStorage
+- CSS
 
-## Backend
+### Backend
 - Node.js
 - Express
+- Firebase Authentication
+
+### Database
+- Supabase
+
+### Deployment
+- Vercel
 
 ---
 
-# 🏗️ Arquitectura
-
-El proyecto sigue una arquitectura fullstack separada:
-
-client/ → frontend React  
-server/ → API REST Express  
-docs/ → documentación  
-
-## Backend por capas
-
-routes/ → endpoints  
-controllers/ → requests/responses  
-services/ → lógica de negocio  
-config/ → configuración  
-
----
-
-# ✨ Funcionalidades
-
-- Registro y login de usuarios con Firebase Authentication
-- Crear entrenamientos
-- Visualizar entrenamientos
-- Eliminar entrenamientos
-- Dark / Light mode
-- Responsive mobile design
-- Persistencia local de datos
-- Navegación entre páginas
-- UI moderna tipo glassmorphism
-
----
-
-# 📱 Secciones
-
-## Home
-- Workout del día
-- Crear entrenamientos
-- Estadísticas rápidas
-
-## History
-- Historial de entrenamientos
-
-## Profile
-- Gestión básica de usuario
-
----
-
-# ⚙️ Instalación
-
-## 1. Clonar repositorio
+## Architecture
 
 ```bash
-git clone https://github.com/IvanBussio/workout-tracker-app.git
+client/   → React frontend
+server/   → Express backend
+docs/     → Project documentation
 ```
 
-## 2. Backend
+### Backend Structure
 
 ```bash
-cd server
-npm install
-npm run dev
+server/src/
+├── config/
+├── controllers/
+├── data/
+├── routes/
+├── services/
+└── index.js
 ```
 
-Servidor disponible en:
+---
 
-```txt
-http://localhost:3000
-```
+## Current Status
 
-## 3. Frontend
+✅ Firebase Authentication working
+
+✅ Supabase integration working
+
+✅ Workout CRUD working
+
+✅ Express backend configured
+
+✅ Vercel deployment working
+
+---
+
+## Next Improvements
+
+- Backend authentication validation
+- Protected API routes
+- Row Level Security (RLS)
+- Workout history filters
+- Mobile optimization
+- Dashboard analytics
+- Exercise management
+- User-specific dashboard
+
+---
+
+## Installation
+
+### Frontend
 
 ```bash
 cd client
@@ -118,56 +98,53 @@ npm install
 npm run dev
 ```
 
-Aplicación disponible en:
+### Backend
 
-```txt
-http://localhost:5173
+```bash
+cd server
+npm install
+npm run dev
 ```
 
 ---
 
-# 🧪 Testing
+## Environment Variables
 
-Se realizaron pruebas manuales para validar:
+### Firebase
 
-- Creación de entrenamientos
-- Eliminación de entrenamientos
-- Login y registro
-- Comunicación frontend-backend
-- Responsive mobile
-- Manejo de errores
+```env
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+```
 
-Más detalles disponibles en:
+### Supabase
 
-docs/testing.md
-
----
-
-# 📚 Documentación
-
-La carpeta docs/ incluye:
-
-- agile.md → metodología de trabajo
-- idea.md → idea del proyecto
-- design.md → arquitectura
-- api.md → endpoints
-- testing.md → pruebas realizadas
+```env
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+```
 
 ---
 
-# 🔮 Mejoras futuras
+## Production Build
 
-- Integración Supabase
-- Base de datos persistente cloud
-- Historial avanzado
-- Analytics y gráficos
-- Ejercicios personalizados
-- Protected routes
-- Notificaciones
-- Dashboard fitness
+```bash
+cd client
+npm run build
+```
 
 ---
 
-# 👨‍💻 Autor
+## Deployment
 
-Desarrollado por Ivan Bussio
+Deployed with Vercel.
+
+---
+
+## Author
+
+Ivan Bussio
